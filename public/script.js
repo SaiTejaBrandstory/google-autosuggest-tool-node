@@ -10,7 +10,7 @@ form.addEventListener("submit", async (e) => {
   loading.classList.remove("hidden");
 
   try {
-    const res = await fetch(`http://localhost:3000/api/suggest?q=${encodeURIComponent(keyword)}`);
+    const res = await fetch(`/api/suggest?q=${encodeURIComponent(keyword)}`);
     const data = await res.json();
     const suggestions = data.suggestions;
 
