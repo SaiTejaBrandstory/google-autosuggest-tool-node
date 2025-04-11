@@ -48,3 +48,4 @@ function exportCSV(keyword, suggestions) {
   link.click();
   link.remove();
 }
+
