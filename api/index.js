@@ -20,7 +20,7 @@ async function fetchSuggestions(keyword) {
   return res.data[1];
 }
 
-app.get("/api/suggest", async (req, res) => {
+app.get("/api/index", async (req, res) => {
   const query = req.query.q || "";
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
   const allSuggestions = new Set();
