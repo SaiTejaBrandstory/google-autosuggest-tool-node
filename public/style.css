@@ -1,0 +1,40 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    min-height: 100vh;
+    padding-bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    color: #111;
+    background-size: 400% 400%;
+    animation: pastelBackground 20s ease infinite;
+  }
+  
+  /* Animate infinite light background colors */
+  @keyframes pastelBackground {
+    0% { background-color: #ffe0e0; }
+    20% { background-color: #e0fff4; }
+    40% { background-color: #f0f0ff; }
+    60% { background-color: #fff4e0; }
+    80% { background-color: #e0fffa; }
+    100% { background-color: #ffe0e0; }
+  }
+  
+  h1 {
+    margin: 0;
+  }
+  
+  #results ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  #results li {
+    padding: 0.6rem;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
