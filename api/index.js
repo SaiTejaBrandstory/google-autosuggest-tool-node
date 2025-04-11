@@ -1,48 +1,32 @@
+// api/index.js
+
 const express = require("express");
-const cors = require("cors");
 const axios = require("axios");
+const cors = require("cors");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 
-async function fetchSuggestions(keyword) {
-  const baseUrl = "https://suggestqueries.google.com/complete/search";
-  const params = {
-    client: "firefox",
-    q: keyword,
-    hl: "en",
-    gl: "us",
-  };
+// ✅ API route to fetch Google suggestions
+app.get("/api/suggest", async (req, res) => {
+  const query = req.query.q;
 
-  const res = await axios.get(baseUrl, { params });
-  return res.data[1];
-}
-
-app.get("/api/index", async (req, res) => {
-  const query = req.query.q || "";
-  const alphabet = "abcdefghijklmnopqrstuvwxyz";
-  const allSuggestions = new Set();
+  if (!query) {
+    return res.status(400).json({ error: "Missing query" });
+  }
 
   try {
-    const promises = [fetchSuggestions(query)];
+    const response = await axios.get(
+      `https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(query)}`
+    );
 
-    for (const letter of alphabet) {
-      promises.push(fetchSuggestions(`${query} ${letter}`));
-    }
-
-    const results = await Promise.all(promises);
-
-    results.flat().forEach((suggestion) => allSuggestions.add(suggestion));
-
-    res.json({
-      keyword: query,
-      suggestions: Array.from(allSuggestions).slice(0, 100),
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Suggestion fetch failed." });
+    const suggestions = response.data[1];
+    res.status(200).json({ keyword: query, suggestions });
+  } catch (error) {
+    console.error("Error fetching suggestions:", error.message);
+    res.status(500).json({ error: "Failed to fetch suggestions" });
   }
 });
 

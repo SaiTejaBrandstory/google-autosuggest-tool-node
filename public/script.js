@@ -3,9 +3,8 @@ const input = document.getElementById("keyword");
 const results = document.getElementById("results");
 const loading = document.getElementById("loading");
 
-// ✅ Use dynamic base URL — works local & live
-const isLocal = window.location.hostname === "localhost";
-const baseURL = isLocal ? "http://localhost:3000" : "";
+// Detect local or live
+const baseURL = window.location.hostname === "localhost" ? "http://localhost:3000" : "";
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -28,7 +27,7 @@ form.addEventListener("submit", async (e) => {
 
     if (suggestions.length > 0) {
       results.innerHTML = `
-        <h2>Suggestions for "${data.keyword}" (${suggestions.length})</h2>
+        <h2>Suggestions for "<strong>${data.keyword}</strong>" (${suggestions.length})</h2>
         <div class="mb-3">
           <button class="btn btn-success btn-sm" onclick="copyAll()">📋 Copy All</button>
           <button class="btn btn-warning btn-sm" onclick='exportCSV("${data.keyword}", ${JSON.stringify(suggestions)})'>⬇️ Export CSV</button>
@@ -36,7 +35,7 @@ form.addEventListener("submit", async (e) => {
         <ul>${suggestions.map(s => `<li>${s}</li>`).join("")}</ul>
       `;
     } else {
-      results.innerHTML = `<p>No suggestions found for "${data.keyword}".</p>`;
+      results.innerHTML = `<p>No suggestions found for "<strong>${data.keyword}</strong>".</p>`;
     }
   } catch (error) {
     console.error(error);
@@ -46,13 +45,14 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-// 📋 Copy to clipboard
 function copyAll() {
-  const text = Array.from(document.querySelectorAll("#results li")).map(li => li.textContent).join("\n");
-  navigator.clipboard.writeText(text).then(() => alert("✅ Copied all suggestions!"));
+  const text = Array.from(document.querySelectorAll("#results li"))
+    .map(li => li.textContent)
+    .join("\n");
+  navigator.clipboard.writeText(text)
+    .then(() => alert("✅ Copied all suggestions!"));
 }
 
-// ⬇️ Export as CSV
 function exportCSV(keyword, suggestions) {
   const csvContent = "data:text/csv;charset=utf-8," + suggestions.map(s => `"${s}"`).join("\n");
   const encoded = encodeURI(csvContent);
@@ -63,6 +63,7 @@ function exportCSV(keyword, suggestions) {
   link.click();
   link.remove();
 }
+
 
 
 
